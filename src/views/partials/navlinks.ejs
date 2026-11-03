@@ -1,0 +1,31 @@
+<nav class="navlinks__wrapper">
+  <ul class="navlinks__list">
+    <li>
+      <a
+        class="navlinks__item"
+        href="/"
+        title="All messages"
+        aria-label="View all messages"
+      >
+        <%- include("../icons/chat-icon") %>
+      </a>
+    </li>
+
+    <% if (locals.isAuthenticated) { %>
+    <li>
+      <a
+        class="navlinks__item"
+        href="/new"
+        title="New message"
+        aria-label="Create new message"
+      >
+        <%- include("../icons/chat-add-icon.ejs") %>
+      </a>
+    </li>
+    <% } %>
+
+    <li>
+      <%- include("../partials/usermenu") %>
+    </li>
+  </ul>
+</nav>

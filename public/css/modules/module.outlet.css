@@ -1,0 +1,41 @@
+.main__main-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 375px;
+}
+
+.main__main-wrapper > * {
+  max-width: 900px;
+  border-radius: var(--border-radius);
+  background-color: var(--card-bg);
+  padding: calc(var(--standard-gap) * 2);
+}
+
+.error__error-container {
+  max-width: 600px;
+  width: fit-content;
+  display: flex;
+  flex-direction: column;
+  gap: var(--standard-gap);
+}
+
+.error__error-container h1,
+.error__error-badge {
+  color: var(--color-red-300);
+  text-align: center;
+}
+
+.error__error-badge {
+  font-size: calc(var(--font-size) * 3);
+}
+
+.error__error-container h1 {
+  font-size: calc(var(--font-size) * 1);
+}
+
+.error__return-button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}

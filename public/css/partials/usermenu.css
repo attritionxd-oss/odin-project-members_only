@@ -1,0 +1,41 @@
+.usermenu__badge-button {
+  display: block;
+  border: none;
+  background-color: transparent;
+  position: relative;
+
+  cursor: pointer;
+}
+
+.usermenu__badge-overlay {
+  position: absolute;
+  top: calc(var(--header-height) - 0.6rem);
+  right: var(--standard-gap);
+
+  padding: var(--standard-gap);
+  background-color: var(--card-bg);
+  border-radius: var(--border-radius);
+  border: 1px solid var(--card-border);
+
+  display: flex;
+  flex-direction: column;
+  gap: var(--standard-gap);
+
+  visibility: hidden;
+  opacity: 0;
+}
+
+.usermenu__badge-overlay.is-open {
+  visibility: visible;
+  opacity: 1;
+}
+
+.usermenu__user-info {
+  display: flex;
+  flex-direction: column;
+  gap: var(--standard-gap);
+}
+
+.usermenu__user-info h2 {
+  color: var(--text-h);
+}

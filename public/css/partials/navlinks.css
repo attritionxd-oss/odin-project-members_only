@@ -1,0 +1,30 @@
+/* .navlinks__wrapper {} */
+
+.navlinks__list {
+  display: flex;
+  align-items: center;
+  gap: var(--standard-gap);
+}
+
+.navlinks__list > li {
+  /* height: 1.4rem; */
+  display: block;
+  height: 2.4rem;
+}
+
+.navlinks__list > li > a {
+  vertical-align: middle;
+}
+
+.header__user-menu {
+  display: flex;
+  gap: var(--standard-gap);
+  height: var(--header-height);
+  align-items: center;
+  width: fit-content;
+}
+
+.header__user-name {
+  color: var(--text-h);
+  font-weight: 500;
+}
