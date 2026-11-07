@@ -1,55 +1,39 @@
 import crypto from "node:crypto";
+import { promisify } from "node:util";
 
-const ITERATIONS = 600000;
+const scriptAsync = promisify(crypto.scrypt);
+const randomBytesAsync = promisify(crypto.randomBytes);
+
 const KEYLEN = 64;
-const DIGEST = "sha256";
+const SCRYPT_OPTIONS = {
+  N: 16384,
+  r: 8,
+  p: 1,
+};
 
-export function hashPassword(password, callback) {
-  crypto.randomBytes(16, (err, saltBuffer) => {
-    if (err) return callback(err);
+export async function hashPassword(password) {
+  const saltBuffer = await randomBytesAsync(16);
+  const salt = saltBuffer.toString("hex");
 
-    const salt = saltBuffer.toString("hex");
+  const derivedKey = await scriptAsync(password, salt, KEYLEN, SCRYPT_OPTIONS);
+  const hash = derivedKey.toString("hex");
 
-    crypto.pbkdf2(
-      password,
-      salt,
-      ITERATIONS,
-      KEYLEN,
-      DIGEST,
-      (err, derivedKey) => {
-        if (err) throw err;
-
-        const hash = derivedKey.toString("hex");
-
-        callback(null, { hash, salt });
-      },
-    );
-  });
+  return { hash, salt };
 }
 
-export function verifyPassword(userPassword, storedHash, storedSalt, done) {
-  crypto.pbkdf2(
+export async function verifyPassword(userPassword, storedHash, storedSalt) {
+  const storedHashBuffer = Buffer.from(storedHash, "hex");
+
+  const derivedKey = await scriptAsync(
     userPassword,
     storedSalt,
-    ITERATIONS,
     KEYLEN,
-    DIGEST,
-    (err, derivedKey) => {
-      if (err) return done(err);
-
-      const hashToTestBuffer = Buffer.from(derivedKey.toString("hex"), "hex");
-      const storedHashBuffer = Buffer.from(storedHash, "hex");
-
-      if (hashToTestBuffer.length !== storedHashBuffer.length) {
-        return done(null, false);
-      }
-
-      const isMatch = crypto.timingSafeEqual(
-        hashToTestBuffer,
-        storedHashBuffer,
-      );
-
-      done(null, isMatch);
-    },
+    SCRYPT_OPTIONS,
   );
+
+  if (derivedKey.length !== storedHashBuffer.length) {
+    return false;
+  }
+
+  return crypto.timingSafeEqual(derivedKey, storedHashBuffer);
 }

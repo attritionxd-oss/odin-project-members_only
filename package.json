@@ -45,7 +45,8 @@
     "passport": "^0.7.0",
     "passport-local": "^1.0.0",
     "pg": "^8.23.1",
-    "pg-format": "^1.0.4"
+    "pg-format": "^1.0.4",
+    "promisify": "^0.0.3"
   },
   "devDependencies": {
     "@babel/core": "^8.0.6",
@@ -70,6 +71,7 @@
     "#services/*": "./src/services/*",
     "#models/*.js": "./src/models/*.js",
     "#utils/*": "./src/utils/*",
-    "#tests/*": "./tests/*"
+    "#tests/*": "./tests/*",
+    "#sandbox/*": "./sandbox/*"
   }
 }
