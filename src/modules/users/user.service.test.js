@@ -76,9 +76,9 @@ describe("User Service Integration", () => {
           status: record.status,
         })),
       ).toMatchObject([
-        { username: adminPayload.username, status: "ACTIVATED" },
-        { username: userPayload1.username, status: "PENDING_ACTIVATION" },
         { username: userPayload2.username, status: "TERMINATED" },
+        { username: userPayload1.username, status: "PENDING_ACTIVATION" },
+        { username: adminPayload.username, status: "ACTIVATED" },
       ]);
     });
   });

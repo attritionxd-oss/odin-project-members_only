@@ -48,7 +48,7 @@ const userService = {
     const query = format(
       includeDeleted
         ? /* sql */ `
-          SELECT * FROM users ORDER BY username ASC;
+          SELECT * FROM users ORDER BY %s %s;
         `
         : /* sql */ `
           SELECT * FROM users WHERE deleted_at IS NULL ORDER BY %s %s;
