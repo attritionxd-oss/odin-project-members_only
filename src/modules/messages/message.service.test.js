@@ -73,9 +73,41 @@ describe("Message Service Integration", () => {
       expect(await messageService.getAll()).toBeDefined();
     });
 
-    it.todo("should return all non-deleted records");
+    it("should return all non-deleted records", async () => {
+      const seeds = await createSeedData1();
+      await messageService.create({
+        message_body: "test message 1",
+        created_by: seeds.user_id,
+      });
+      const toDelete = await messageService.create({
+        message_body: "test message 2",
+        created_by: seeds.user_id,
+      });
+      await messageService.softDelete(toDelete.id);
 
-    it.todo("should return all records in descending order");
+      expect(await messageService.getAll()).toHaveLength(1);
+    });
+
+    it("should return all records in ascending order", async () => {
+      const seeds = await createSeedData1();
+      await messageService.create({
+        message_body: "test message 1",
+        created_by: seeds.user_id,
+      });
+      const toDelete = await messageService.create({
+        message_body: "test message 2",
+        created_by: seeds.user_id,
+      });
+      await messageService.softDelete(toDelete.id);
+
+      const fetched = await messageService.getAll({
+        includeDeleted: true,
+        isOrderAscBool: true,
+      });
+
+      expect(fetched).toHaveLength(2);
+      expect(fetched.map((msg) => parseInt(msg.id, 10))).toMatchObject([1, 2]);
+    });
   });
 
   describe("getById()", () => {
@@ -104,7 +136,7 @@ describe("Message Service Integration", () => {
   });
 
   describe("getByUserId", () => {
-    it("should return only the relevant messaged from a user", async () => {
+    it("should return a user's undeleted messages", async () => {
       const seed1 = await createSeedData1();
       const seed2 = await createSeedData2();
 
@@ -112,7 +144,7 @@ describe("Message Service Integration", () => {
         message_body: "irrelevant message",
         created_by: seed1.user_id,
       });
-      await messageService.create({
+      const toDelete = await messageService.create({
         message_body: "relevant message 1",
         created_by: seed2.user_id,
       });
@@ -121,7 +153,39 @@ describe("Message Service Integration", () => {
         created_by: seed2.user_id,
       });
 
+      await messageService.softDelete(toDelete.id);
+
       const relevantMessages = await messageService.getByUserId(seed2.user_id);
+
+      expect(relevantMessages).toBeDefined();
+      expect(relevantMessages).toMatchObject([
+        { message_body: "relevant message 2", created_by: seed2.user_id },
+      ]);
+    });
+
+    it("should return a user's deleted and undeleted messages", async () => {
+      const seed1 = await createSeedData1();
+      const seed2 = await createSeedData2();
+
+      await messageService.create({
+        message_body: "irrelevant message",
+        created_by: seed1.user_id,
+      });
+      const toDelete = await messageService.create({
+        message_body: "relevant message 1",
+        created_by: seed2.user_id,
+      });
+      await messageService.create({
+        message_body: "relevant message 2",
+        created_by: seed2.user_id,
+      });
+
+      await messageService.softDelete(toDelete.id);
+
+      const relevantMessages = await messageService.getByUserId(seed2.user_id, {
+        includeDeleted: true,
+        isOrderAscBool: true,
+      });
 
       expect(relevantMessages).toBeDefined();
       expect(relevantMessages).toMatchObject([
@@ -162,8 +226,8 @@ describe("Message Service Integration", () => {
       expect(updated).toBeDefined();
       expect(updated.message_body).toBe("message updated");
       expect(await messageService.getAll()).toMatchObject([
-        { id: fixed.id, message_body: "fixed message" },
         { id: toUpdate.id, message_body: "message updated" },
+        { id: fixed.id, message_body: "fixed message" },
       ]);
     });
 

@@ -1,4 +1,5 @@
 import { pool } from "#models/pool.js";
+import format from "pg-format";
 
 const messageService = {
   create: async ({ message_body = null, created_by = null } = {}) => {
@@ -15,10 +16,24 @@ const messageService = {
     return rows[0];
   },
 
-  getAll: async () => {
-    const query = /* sql */ `
-      SELECT * FROM messages;
-    `;
+  getAll: async ({
+    includeDeleted = false,
+    isOrderAscBool = false,
+    orderByField = "created_at",
+  } = {}) => {
+    const isOrderAsc = isOrderAscBool ? "ASC" : "DESC";
+
+    const query = format(
+      includeDeleted
+        ? /* sql */ `
+      SELECT * FROM messages ORDER BY %s %s;
+    `
+        : /* sql */ `
+      SELECT * FROM messages WHERE deleted_at IS NULL ORDER BY %s %s;
+    `,
+      orderByField,
+      isOrderAsc,
+    );
 
     const { rows } = await pool.query(query);
     return rows;
@@ -35,14 +50,36 @@ const messageService = {
     return rows[0] || null;
   },
 
-  getByUserId: async (created_by) => {
+  getByUserId: async (
+    created_by,
+    {
+      includeDeleted = false,
+      isOrderAscBool = false,
+      orderByField = "created_at",
+    } = {},
+  ) => {
     if (!created_by || created_by === "") {
       throw new Error("`id` must be specified");
     }
 
-    const query = /* sql */ `
-      SELECT * FROM messages WHERE created_by = $1;
-    `;
+    const isOrderAsc = isOrderAscBool ? "ASC" : "DESC";
+
+    const query = format(
+      includeDeleted
+        ? /* sql */ `
+          SELECT * FROM messages
+          WHERE created_by = $1
+          ORDER BY %s %s;
+        `
+        : /* sql */ `
+          SELECT * FROM messages
+          WHERE created_by = $1
+            AND deleted_at IS NULL
+          ORDER BY %s %s;
+        `,
+      orderByField,
+      isOrderAsc,
+    );
 
     const { rows } = await pool.query(query, [created_by]);
     return rows;
