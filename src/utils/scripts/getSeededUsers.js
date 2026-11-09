@@ -40,10 +40,13 @@ export async function getSeededUsers() {
     rawUsers.map(async (user) => {
       const { hash, salt } = await hashPassword(PASSWORD[user.role]);
 
+      const deleted_at = user.status === "TERMINATED" ? new Date() : null;
+
       return {
         ...user,
         hash,
         salt,
+        deleted_at,
       };
     }),
   );

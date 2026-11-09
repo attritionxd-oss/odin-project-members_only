@@ -11,11 +11,16 @@ export async function seedUsers() {
 
     for (const user of usersToInsert) {
       const query = /* sql */ `
-        INSERT INTO users (username, first_name, last_name, role, status, hash, salt)
-        VALUES ($1, $2, $3, $4, $5, $6, $7)
+        INSERT INTO users (username, first_name, last_name, role, status, hash, salt, deleted_at)
+        VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
         ON CONFLICT (username) DO UPDATE SET
+          first_name = EXCLUDED.first_name,
+          last_name = EXCLUDED.last_name,
+          role = EXCLUDED.role,
+          status = EXCLUDED.status,
           hash = EXCLUDED.hash,
           salt = EXCLUDED.salt,
+          deleted_at = EXCLUDED.deleted_at,
           updated_at = CURRENT_TIMESTAMP;
       `;
 
@@ -27,6 +32,7 @@ export async function seedUsers() {
         user.status,
         user.hash,
         user.salt,
+        user.deleted_at,
       ];
 
       await client.query(query, params);
