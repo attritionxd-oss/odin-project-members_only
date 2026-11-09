@@ -1,21 +1,55 @@
+import { matchedData } from "express-validator";
 import { renderWithLayout } from "#modules/renderer/renderHelper.js";
 
 export const authController = {
-  showLogin: (req, res) => {
+  showLogin(req, res) {
     if (res.locals.isAuthenticated) {
       res.redirect("/");
     }
+
     renderWithLayout(res, "outlets/login", {
       title: "Login",
+      redirectTo: req.query.redirectTo || "/",
       error: req.query.error || null,
+      errorMessage: req.flash("error") || null,
     });
   },
 
-  login: (req, res) => {
-    res.redirect("/");
+  handleValidation(req, res, next) {
+    try {
+      const validationErrors = req.validationErrors;
+
+      const { redirectTo } = matchedData(req);
+
+      let targetRedirect = redirectTo || "/";
+
+      if (!targetRedirect.startsWith("/") || targetRedirect.startsWith("//")) {
+        targetRedirect = "/";
+      }
+
+      res.locals.targetRedirect = targetRedirect;
+
+      if (validationErrors?.length > 0) {
+        return renderWithLayout(res, "outlets/login", {
+          title: "Login",
+          redirectTo: targetRedirect || "/",
+          error: validationErrors || [],
+          errorMessage: req.flash("error") || null,
+        });
+      }
+
+      next();
+    } catch (error) {
+      next(error);
+    }
   },
 
-  logout: (req, res) => {
-    res.redirect("/");
+  logout(req, res, next) {
+    req.logout((err) => {
+      if (err) {
+        return next(err);
+      }
+      res.redirect("/");
+    });
   },
 };

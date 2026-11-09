@@ -12,6 +12,10 @@ import {
   handleNotFound,
   handleGlobalError,
 } from "#modules/renderer/errorHandler.js";
+import { sessionFlash } from "#modules/sessionFlash/sessionFlash.middleware.js";
+import { sessionMiddleware } from "#config/session.js";
+import { passportSession } from "#config/passport.js";
+import { attachCurrentUser } from "#modules/auth/auth.middleware.js";
 
 // router imports
 import indexRoutes from "#modules/index/index.routes.js";
@@ -36,11 +40,15 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static(publicPath));
 app.use(globalRateLimiter);
 app.use(ipRateLimiter);
+app.use(sessionMiddleware);
+app.use(sessionFlash);
+app.use(passportSession);
+app.use(attachCurrentUser);
 
 // routers
+app.use("/", authRoutes);
 app.use("/users", userRoutes);
 app.use("/", indexRoutes);
-app.use("/", authRoutes);
 
 // error handling
 app.use(handleNotFound);

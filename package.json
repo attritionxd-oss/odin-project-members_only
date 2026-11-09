@@ -64,6 +64,7 @@
   },
   "imports": {
     "#*": "./src/*",
+    "#config/*": "./src/config/*",
     "#controllers/*": "./src/controllers/*",
     "#middleware/*": "./src/middleware/*",
     "#modules/*": "./src/modules/*",
