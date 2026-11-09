@@ -11,7 +11,6 @@ export const userController = {
 
   register: (req, res, next) => {
     req.fields = req.body;
-    console.log(req.body);
 
     renderWithLayout(res, "outlets/register", {
       title: "Sign up",
