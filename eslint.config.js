@@ -4,7 +4,7 @@ import prettierConfig from "eslint-config-prettier";
 
 export default [
   {
-    ignores: ["node_modules/", "dist/", "build/", "coverage/"],
+    ignores: ["node_modules/", "dist/", "build/", "coverage/", "sandbox/"],
   },
   js.configs.recommended,
   {
