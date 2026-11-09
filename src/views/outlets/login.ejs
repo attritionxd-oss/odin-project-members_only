@@ -1,9 +1,44 @@
 <div class="outlet__outlet-wrapper">
-  <h2><%= title %></h2>
-  <p>
-    Lorem ipsum dolor sit amet consectetur adipisicing elit. Itaque debitis,
-    impedit doloremque ratione iure repudiandae ipsa tempore eius rem distinctio
-    ad amet quisquam animi deleniti quasi voluptatem veniam consequuntur
-    perferendis!
-  </p>
+  <div class="login__auth-card">
+    <h2><%= title %></h2>
+    <p>Please log in</p>
+
+    <form action="/login" method="post" class="login__form">
+      <input type="hidden" name="redirectTo" value="<%= redirectTo %>" />
+
+      <div class="login__form-group">
+        <label for="username">Username</label>
+        <input type="text" name="username" id="username" class="form-control" />
+      </div>
+
+      <div class="login__form-group">
+        <label for="password">Password</label>
+        <input
+          type="password"
+          name="password"
+          id="password"
+          class="form-control"
+          placeholder="••••••••"
+        />
+      </div>
+
+      <% if (error) { %>
+      <div class="login_error" role="alert">
+        <ul class="form-errors">
+          <% error.forEach(e => { %>
+          <li class="form-error-item"><%= e.msg %></li>
+          <% }) %>
+        </ul>
+      </div>
+      <% } %>
+
+      <% if (errorMessage) { %>
+      <div class="login_error" role="alert"><%= errorMessage %></div>
+      <% } %>
+
+      <button type="submit" class="login__login-btn btn-tall btn-rect">
+        Sign In
+      </button>
+    </form>
+  </div>
 </div>

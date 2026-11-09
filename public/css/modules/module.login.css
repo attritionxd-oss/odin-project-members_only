@@ -1,0 +1,50 @@
+.login__auth-card {
+  max-width: 450px;
+  min-width: 250px;
+
+  display: flex;
+  flex-direction: column;
+  gap: var(--standard-gap);
+}
+
+.login__auth-card h2 {
+  font-size: 1.8rem;
+}
+
+.login__error {
+  color: var(--color-stop-main);
+  text-align: center;
+}
+
+.login__form {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--standard-gap) * 2);
+}
+
+.login__form-group {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--standard-gap) * 0.5);
+}
+
+.login__form-group input {
+  height: var(--input-tall-height);
+  border: 1px solid var(--text);
+  padding: 0 var(--standard-gap);
+}
+
+.login__form-group input:focus-visible {
+  outline: 2px solid var(--color-focus-ring);
+  outline-offset: 3px;
+}
+
+.login__login-btn {
+  border: none;
+  background-color: var(--color-action-active);
+}
+
+.login__login-btn:focus-visible {
+  outline: 2px solid var(--color-focus-ring);
+  outline-offset: 3px;
+}

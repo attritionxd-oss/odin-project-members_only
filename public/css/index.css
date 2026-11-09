@@ -2,6 +2,7 @@
 @import url("/css/partials/header.css");
 @import url("/css/partials/navlinks.css");
 @import url("/css/partials/usermenu.css");
+@import url("/css/modules/module.login.css");
 @import url("/css/modules/module.outlet.css");
 @import url("/css/modules/module.button.css");
 @import url("/css/modules/module.form.css");
