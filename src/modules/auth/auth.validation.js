@@ -14,6 +14,7 @@ export const validateLogin = [
     .trim()
     .notEmpty()
     .withMessage(`Username ${emptyErr}`)
+    .if(body("username").trim().notEmpty())
     .isString()
     .withMessage(`Username ${stringErr}`)
     .isLength({ min: 3, max: 30 })
@@ -26,6 +27,7 @@ export const validateLogin = [
     .trim()
     .notEmpty()
     .withMessage(`Password ${emptyErr}`)
+    .if(body("password").trim().notEmpty())
     .isLength({ min: PASSWORD_CHAR_MIN, max: PASSWORD_CHAR_MAX })
     .withMessage(
       `Password ${lengthErr({ min: PASSWORD_CHAR_MIN, max: PASSWORD_CHAR_MAX })}`,

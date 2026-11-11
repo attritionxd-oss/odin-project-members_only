@@ -1,3 +1,4 @@
+import { renderWithLayout } from "#modules/renderer/renderHelper.js";
 import passport from "passport";
 
 export const authenticateLogin = (req, res, next) => {
@@ -7,9 +8,13 @@ export const authenticateLogin = (req, res, next) => {
     }
     if (!user) {
       req.flash("error", info.message);
-      return res.redirect(
-        `/login?redirectTo=${encodeURIComponent(req.originalUrl)}`,
-      );
+      return renderWithLayout(res, "outlets/login", {
+        title: "Login",
+        redirectTo: req.originalUrl || "/",
+        formData: req.body || {},
+        error: [],
+        errorMessage: req.flash("error") || null,
+      });
     }
 
     req.login(user, (err) => {
@@ -53,7 +58,7 @@ export const requireRole = (...allowedRoles) => {
 
     if (!hasRole) {
       const error = new Error(
-        `Your role (${req.user.role}) does not have permission to access this resource.`,
+        `Your role (${req.user.role.toLowerCase()}) does not have permission to access this resource.`,
       );
       error.statusCode = 403;
       return next(error);

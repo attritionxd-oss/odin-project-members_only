@@ -10,6 +10,7 @@ export const authController = {
     renderWithLayout(res, "outlets/login", {
       title: "Login",
       redirectTo: req.query.redirectTo || "/",
+      formData: { username: "" },
       error: req.query.error || null,
       errorMessage: req.flash("error") || null,
     });
@@ -33,6 +34,7 @@ export const authController = {
         return renderWithLayout(res, "outlets/login", {
           title: "Login",
           redirectTo: targetRedirect || "/",
+          formData: req.body || { username: "" },
           error: validationErrors || [],
           errorMessage: req.flash("error") || null,
         });
