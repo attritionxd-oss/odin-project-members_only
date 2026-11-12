@@ -51,7 +51,21 @@ export const authController = {
       if (err) {
         return next(err);
       }
-      res.redirect("/");
+
+      req.session.destroy((err) => {
+        if (err) {
+          return next(err);
+        }
+
+        res.clearCookie("connect.sid", {
+          path: "/",
+          httpOnly: true,
+          secure: process.env.NODE_ENV === "production",
+          sameSite: "lax",
+        });
+
+        return res.redirect("/");
+      });
     });
   },
 };

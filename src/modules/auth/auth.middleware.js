@@ -67,3 +67,11 @@ export const requireRole = (...allowedRoles) => {
     next();
   };
 };
+
+export const guestsOnly = (req, res, next) => {
+  if (req.isAuthenticated()) {
+    return res.redirect("/");
+  }
+
+  next();
+};
