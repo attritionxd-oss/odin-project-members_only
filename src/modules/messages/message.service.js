@@ -18,7 +18,7 @@ const messageService = {
 
   getAll: async ({
     includeDeleted = false,
-    isOrderAscBool = false,
+    isOrderAscBool = true,
     orderByField = "created_at",
   } = {}) => {
     const isOrderAsc = isOrderAscBool ? "ASC" : "DESC";
@@ -26,12 +26,39 @@ const messageService = {
     const query = format(
       includeDeleted
         ? /* sql */ `
-      SELECT * FROM messages ORDER BY %s %s;
+      SELECT 
+        m.*,
+        u.username,
+        u.first_name,
+        u.last_name,
+        CONCAT(u.first_name, ' ', u.last_name) AS full_name,
+        CONCAT(LEFT(u.first_name, 1), LEFT(u.last_name,1)) AS initials,
+        u.role,
+        u.status
+      FROM messages m
+      LEFT JOIN users u
+        ON m.created_by = u.id
+      ORDER BY %s %s;
     `
         : /* sql */ `
-      SELECT * FROM messages WHERE deleted_at IS NULL ORDER BY %s %s;
+      SELECT 
+        m.*,
+        u.username,
+        u.first_name,
+        u.last_name,
+        CONCAT(u.first_name, ' ', u.last_name) AS full_name,
+        CONCAT(LEFT(u.first_name, 1), LEFT(u.last_name,1)) AS initials,
+        u.role,
+        u.status
+      FROM messages m
+      LEFT JOIN users u
+        ON m.created_by = u.id
+      WHERE 
+        m.deleted_at IS NULL
+        AND u.status != 'TERMINATED'
+      ORDER BY %s %s;
     `,
-      orderByField,
+      `m.${orderByField}`,
       isOrderAsc,
     );
 
@@ -43,7 +70,19 @@ const messageService = {
     if (!id || id === "") throw new Error("`id` must be specified");
 
     const query = /* sql */ `
-      SELECT * FROM messages WHERE id = $1
+      SELECT 
+        m.*,
+        u.username,
+        u.first_name,
+        u.last_name,
+        CONCAT(u.first_name, ' ', u.last_name) AS full_name,
+        CONCAT(LEFT(u.first_name, 1), LEFT(u.last_name,1)) AS initials,
+        u.role,
+        u.status
+      FROM messages m
+      LEFT JOIN users u
+        ON m.created_by = u.id
+      WHERE m.id = $1
     `;
 
     const { rows } = await pool.query(query, [id]);
@@ -95,7 +134,7 @@ const messageService = {
 
     const query = /* sql */ `
       UPDATE messages
-      SET message_body = $1
+      SET message_body = $1, updated_at = CURRENT_TIMESTAMP
       WHERE id = $2
       RETURNING *;
     `;
@@ -120,7 +159,7 @@ const messageService = {
     if (!id || id === "") throw new Error("`id` must be specified");
 
     const query = /* sql */ `
-      UPDATE messages SET deleted_at = NULL
+      UPDATE messages SET deleted_at = NULL, updated_at = CURRENT_TIMESTAMP
       WHERE id = $1 AND deleted_at IS NOT NULL
       RETURNING *;
     `;

@@ -102,11 +102,11 @@ describe("Message Service Integration", () => {
 
       const fetched = await messageService.getAll({
         includeDeleted: true,
-        isOrderAscBool: true,
+        isOrderAscBool: false,
       });
 
       expect(fetched).toHaveLength(2);
-      expect(fetched.map((msg) => parseInt(msg.id, 10))).toMatchObject([1, 2]);
+      expect(fetched.map((msg) => parseInt(msg.id, 10))).toMatchObject([2, 1]);
     });
   });
 
@@ -226,8 +226,8 @@ describe("Message Service Integration", () => {
       expect(updated).toBeDefined();
       expect(updated.message_body).toBe("message updated");
       expect(await messageService.getAll()).toMatchObject([
-        { id: toUpdate.id, message_body: "message updated" },
         { id: fixed.id, message_body: "fixed message" },
+        { id: toUpdate.id, message_body: "message updated" },
       ]);
     });
 
