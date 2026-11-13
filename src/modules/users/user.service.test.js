@@ -1,4 +1,4 @@
-import { describe, beforeEach, afterAll, it } from "@jest/globals";
+import { describe, beforeEach, afterAll, it, expect } from "@jest/globals";
 import { pool } from "#models/pool.js";
 import userService from "./user.service";
 
@@ -80,6 +80,24 @@ describe("User Service Integration", () => {
         { username: userPayload1.username, status: "PENDING_ACTIVATION" },
         { username: adminPayload.username, status: "ACTIVATED" },
       ]);
+    });
+  });
+
+  describe("getAllUsernames()", () => {
+    it("should return an array of strings containing all existing usernames", async () => {
+      await userService.create(userPayload1);
+      await userService.create(userPayload2);
+
+      const usernames = await userService.getAllUsernames();
+      expect(usernames).toBeInstanceOf(Array);
+      expect(usernames.every((name) => typeof name === "string")).toBe(true);
+      expect(usernames).toMatchObject(["test_user1", "test_user2"]);
+    });
+
+    it("should return an empty array when table is empty", async () => {
+      const emptyArr = await userService.getAllUsernames();
+      expect(emptyArr).toHaveLength(0);
+      expect(emptyArr).toBeInstanceOf(Array);
     });
   });
 
@@ -167,6 +185,32 @@ describe("User Service Integration", () => {
       } catch (error) {
         expect(error).toBeInstanceOf(Error);
         expect(await error.message).toBe("`admin_id` must be specified");
+      }
+    });
+  });
+
+  describe("selfActivate()", () => {
+    it("should update a record, setting it to 'ACTIVATED'", async () => {
+      const user = await userService.create(userPayload1);
+
+      const activated = await userService.selfActivate(user.id);
+
+      expect(activated).toBeDefined();
+      expect(activated.status).toBe("ACTIVATED");
+    });
+
+    it("should return null when specified ID is not found", async () => {
+      expect(await userService.selfActivate(99)).toBeNull();
+    });
+
+    it("should throw an error if no target user ID is passed", async () => {
+      expect.assertions(2);
+
+      try {
+        await userService.selfActivate(null);
+      } catch (error) {
+        expect(error).toBeInstanceOf(Error);
+        expect(await error.message).toBe("`target_user_id` must be specified");
       }
     });
   });

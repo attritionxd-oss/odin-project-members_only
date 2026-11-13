@@ -48,10 +48,19 @@ const userService = {
     const query = format(
       includeDeleted
         ? /* sql */ `
-          SELECT * FROM users ORDER BY %s %s;
+          SELECT
+            *,
+            INITCAP(CONCAT(first_name, ' ', last_name)) AS full_name
+          FROM users
+          ORDER BY %s %s;
         `
         : /* sql */ `
-          SELECT * FROM users WHERE deleted_at IS NULL ORDER BY %s %s;
+          SELECT
+            *,
+            INITCAP(CONCAT(first_name, ' ', last_name)) AS full_name
+          FROM users
+          WHERE deleted_at IS NULL
+          ORDER BY %s %s;
         `,
       orderByField,
       isOrderAsc,
@@ -73,6 +82,21 @@ const userService = {
 
     const { rows } = await pool.query(query);
     return rows[0] || null;
+  },
+
+  getAllUsernames: async () => {
+    /**
+     * performance note
+     * while this works well for small apps, apps with more users may perform
+     * better using `getByUsername`
+     * (instead of loading all usernames into memory)
+     * (note: to drop the hash and salt in the returned data)
+     */
+    const query = /* sql */ `
+      SELECT username FROM users ORDER BY username ASC;
+    `;
+    const { rows } = await pool.query(query);
+    return rows.map((row) => row.username);
   },
 
   getByUsername: async (username) => {
@@ -169,6 +193,30 @@ const userService = {
     }
 
     return executeWithAudit(admin_id, reason, async (client) => {
+      const { rows } = await client.query(
+        /* sql */ `
+          UPDATE users 
+          SET
+            status = 'ACTIVATED', 
+            deleted_at = NULL,
+            updated_at = CURRENT_TIMESTAMP 
+          WHERE id = $1
+          RETURNING *`,
+        [target_user_id],
+      );
+      return rows[0] || null;
+    });
+  },
+
+  selfActivate: (
+    target_user_id = null,
+    reason = "Self-activation with secret code",
+  ) => {
+    if (!target_user_id || target_user_id === "") {
+      throw new Error("`target_user_id` must be specified");
+    }
+
+    return executeWithAudit(target_user_id, reason, async (client) => {
       const { rows } = await client.query(
         /* sql */ `
           UPDATE users 
