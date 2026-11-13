@@ -1,0 +1,62 @@
+<div class="outlet__outlet-wrapper full">
+  <div class="message-main__wrapper">
+    <h2><%= title %></h2>
+    <!-- prettier-ignore -->
+    <section class="message-main">
+      <% if (messages) { %>
+      <ul class="message-main__list">
+        <% messages.forEach(message => { %>
+
+        <li class="message-main__item">
+            <% if (isAuthenticated && isActivated) { %>
+            <span class="user-avatar"><%= message.initials %></span>
+            <div class="message-wrapper">
+              <div class="message-info">
+                <span class="user-full-name"><%= message.full_name %></span>
+                <!-- prettier-ignore -->
+                <span class="message-timestamp"><%= message.created_at__formatted %></span>
+                <% if (currentUser && currentUser.id === message.created_by) { %>
+                 <span>
+                   <form action="/messages/<%= message.id %>/delete?redirect=/" method="post" class="inline-form">
+                    <button type="submit" class="delete-btn">Delete</button>
+                   </form>
+                   <a href="/messages/<%= message.id %>/edit?redirect=/" class="edit-btn">Edit</a>
+                 </span>
+                <% } %>
+              </div>
+              <span class="message-body"><%= message.message_body %></span>
+            </div>
+            <% } else { %>
+            <span class="message-body"><%= message.message_body %></span>
+            <% } %>
+        </li>
+
+        <% }) %>
+      </ul>
+      <% } %>
+    </section>
+    <% if (isAuthenticated && isActivated) { %>
+    <a
+      href="/new"
+      title="New message"
+      aria-label="Create new message"
+      class="chat-add-icon"
+    >
+      <%- include("../icons/chat-add-icon.ejs") %>
+    </a>
+    <% } else if (isAuthenticated) { %>
+    <div class="login-or-register">
+      To send and view sender names:
+      <a href="/users/activate" aria-label="Activate your account" class="btn"
+        >Activate your account</a
+      >
+    </div>
+    <% } else { %>
+    <div class="login-or-register">
+      <a href="/login" aria-label="Login" class="btn">Login</a>
+      or
+      <a href="/users/register" aria-label="Register" class="btn">Register</a>
+    </div>
+    <% } %>
+  </div>
+</div>

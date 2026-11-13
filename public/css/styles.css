@@ -3,9 +3,14 @@
 @import url("/css/partials/navlinks.css");
 @import url("/css/partials/usermenu.css");
 @import url("/css/modules/module.login.css");
+@import url("/css/modules/module.table.css");
+@import url("/css/modules/index-page.css");
 @import url("/css/modules/module.outlet.css");
 @import url("/css/modules/module.button.css");
 @import url("/css/modules/module.form.css");
+@import url("/css/modules/messages/form.css");
+@import url("/css/modules/users/manage-user.css");
+@import url("/css/modules/users/register-success.css");
 
 * {
   box-sizing: border-box;
@@ -48,18 +53,34 @@ a {
   text-decoration: none;
 }
 
-#root {
-  display: flex;
-  flex-direction: column;
-  min-width: 375px;
-  max-width: 1200px;
-  height: 100vh;
-  gap: var(--standard-gap);
+.inline-form {
+  display: inline;
 }
 
-.main__main-wrapper {
-  overflow-y: auto;
-  padding: 0 var(--standard-gap);
+.svg-icon-citation {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  padding: 0;
+  margin: 0;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+
+#root {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows:
+    minmax(0px, var(--header-height))
+    minmax(0px, 1fr);
+  grid-template-areas:
+    "header"
+    "main";
+
+  min-width: 375px;
+  height: 100vh;
+  margin: 0 auto;
 }
 
 .svg-icon {

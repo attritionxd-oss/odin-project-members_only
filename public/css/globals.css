@@ -55,6 +55,7 @@
 
   /* Green / Emerald (Success / Positive / Growth) */
   --color-green-100: #022c22; /* Darkest fill / Subtle success bg */
+  --color-green-150: #034939; /* Medium fill / Success bg */
   --color-green-200: #065f46; /* Strong border / Success outline */
   --color-green-300: #34d399; /* Primary green text / Positive badges */
   --color-green-400: #a7f3d0; /* High-contrast text / Hover state */
