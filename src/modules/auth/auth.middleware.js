@@ -32,6 +32,7 @@ export const authenticateLogin = (req, res, next) => {
 export const attachCurrentUser = (req, res, next) => {
   res.locals.currentUser = req.user || null;
   res.locals.isAuthenticated = req.isAuthenticated();
+  res.locals.isActivated = req.user?.status === "ACTIVATED";
   next();
 };
 
@@ -42,6 +43,15 @@ export const requireAuth = (req, res, next) => {
     );
   }
 
+  next();
+};
+
+export const requireActive = (req, res, next) => {
+  if (req.user.status === "PENDING_ACTIVATION") {
+    return res.redirect(
+      `/users/activate?redirectTo=${encodeURIComponent(req.originalUrl)}`,
+    );
+  }
   next();
 };
 

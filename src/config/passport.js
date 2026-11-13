@@ -16,6 +16,13 @@ const verifyCallback = async (username, password, done) => {
       return done(null, false, { message: "Incorrect username or password." });
     }
 
+    if (user.status === "TERMINATED") {
+      return done(null, false, {
+        message:
+          "Account has been terminated. Contact a support to have your account reinstated.",
+      });
+    }
+
     return done(null, user);
   } catch (error) {
     return done(error);
