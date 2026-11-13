@@ -1,0 +1,38 @@
+<div class="outlet__outlet-wrapper">
+  <div class="message-form__wrapper">
+    <form action="/new" method="post" class="message-form message-form-tall">
+      <!-- prettier-ignore -->
+      <textarea
+        name="message"
+        id="message"
+        placeholder="Message"
+        autofocus="true"
+        autocorrect="on"
+        spellcheck="true"
+        wrap="soft"
+        aria-label="New message input"
+      ><%= formData.message %></textarea>
+      <div class="message-form__btn-container">
+        <a href="/" class="btn btn-sm btn-rect" aria-label="Back to messages"
+          >Back</a
+        >
+        <!-- prettier-ignore -->
+        <button
+          type="submit"
+          class="btn btn-sm btn-rect btn-action-go"
+          aria-label="Submit message"
+        ><%- include("../icons/send-icon") %>
+        </button>
+      </div>
+    </form>
+    <% if (error) { %>
+    <div class="message-form__form-error" role="alert">
+      <ul class="form-errors">
+        <% error.forEach(e => { %>
+        <li class="form-error-item"><%= e.msg %></li>
+        <% }) %>
+      </ul>
+    </div>
+    <% } %>
+  </div>
+</div>
