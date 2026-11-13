@@ -1,0 +1,97 @@
+<div class="outlet__outlet-wrapper">
+  <div class="user-history__wrapper">
+    <header>
+      <h2><%= title %></h2>
+      <a href="/users/manage" class="btn">Back</a>
+    </header>
+    <ul class="user-history__user-info">
+      <li>
+        <span>User ID</span><span><%= user.id %></span>
+      </li>
+      <li>
+        <span>Username</span><span><%= user.username %></span>
+      </li>
+      <li>
+        <span>First name</span><span><%= user.first_name %></span>
+      </li>
+      <li>
+        <span>Last name</span><span><%= user.last_name %></span>
+      </li>
+      <li>
+        <span>Status</span><span><%= user.status %></span>
+      </li>
+      <li>
+        <span>Role</span><span><%= user.role %></span>
+      </li>
+      <li>
+        <span>Created</span><span><%= user.created_at__formatted %></span>
+      </li>
+      <li>
+        <span>Last updated</span><span><%= user.updated_at__formatted %></span>
+      </li>
+      <li>
+        <span>Terminated</span><span><%= user.deleted_at__formatted %></span>
+      </li>
+    </ul>
+
+    <div class="table-responsive">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th class="col-id">Record ID</th>
+            <th class="text-left">Action</th>
+            <th class="text-left">Reason</th>
+            <th class="text-left">Actor ID</th>
+            <th class="text-left">Timestamp</th>
+            <th class="text-left">Snapshot</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <% if (userHistory.length > 0) { %> <% userHistory.forEach(record => {
+          %>
+          <tr>
+            <td class="col-id"><%= record.id %></td>
+            <td class="text-left"><%= record.action %></td>
+            <td class="text-left"><%= record.reason %></td>
+            <td class="text-left"><%= record.actor_id %></td>
+            <td class="text-left"><%= record.created_at__formatted %></td>
+            <td class="text-left">
+              <ul class="snapshot-column">
+                <li>
+                  <span>ID</span><span><%= record.snapshot.id %></span>
+                </li>
+                <li>
+                  <span>ROLE</span><span><%= record.snapshot.role %></span>
+                </li>
+                <li>
+                  <span>STATUS</span><span><%= record.snapshot.status %></span>
+                </li>
+                <li>
+                  <span>FIRST NAME</span
+                  ><span><%= record.snapshot.first_name %></span>
+                </li>
+                <li>
+                  <span>LAST NAME</span
+                  ><span><%= record.snapshot.last_name %></span>
+                </li>
+                <li>
+                  <span>UPDATED</span
+                  ><span><%= record.snapshot.updated_at__formatted %></span>
+                </li>
+              </ul>
+            </td>
+          </tr>
+          <% }) %>
+          <% } else { %>
+          <tr>
+            <td colspan="6" class="text-center empty-state">
+              No change history found.
+            </td>
+          </tr>
+          <% } %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

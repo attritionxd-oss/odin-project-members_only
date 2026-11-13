@@ -14,7 +14,7 @@
               <div class="message-info">
                 <span class="user-full-name"><%= message.full_name %></span>
                 <!-- prettier-ignore -->
-                <span class="message-timestamp"><%= message.created_at__formatted %></span>
+                <span class="message-timestamp"><%= message.updated_at__formatted %></span>
                 <% if (currentUser && currentUser.id === message.created_by) { %>
                  <span>
                    <form action="/messages/<%= message.id %>/delete?redirect=/" method="post" class="inline-form">

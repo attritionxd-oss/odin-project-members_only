@@ -21,6 +21,9 @@ export const indexController = {
           created_at__formatted: !message.created_at
             ? null
             : formatTimestamp(message.created_at, { variant: "medium" }),
+          updated_at__formatted: !message.updated_at
+            ? null
+            : formatTimestamp(message.updated_at, { variant: "medium" }),
           deleted_at__formatted: !message.deleted_at
             ? null
             : formatTimestamp(message.deleted_at, { variant: "medium" }),

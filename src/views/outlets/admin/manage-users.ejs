@@ -1,0 +1,117 @@
+<div class="outlet__outlet-wrapper">
+  <div>
+    <h2><%= title %></h2>
+    <h3>All users</h3>
+    <% if (users && users.length > 0) { %>
+
+    <div class="table-responsive">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th class="col-id">ID</th>
+
+            <th class="text-left">Username</th>
+
+            <th class="text-left">Name</th>
+
+            <th class="text-left">Status</th>
+
+            <th class="text-left">Role</th>
+
+            <th class="text-left">Timestamps</th>
+
+            <% if (currentUser.role === "ADMIN") { %>
+            <th class="col-actions">Action</th>
+            <% } %>
+          </tr>
+        </thead>
+
+        <tbody>
+          <% users.forEach(user => { %>
+          <tr>
+            <td class="col-id">
+              <a href="/users/<%= user.id %>"><%= user.id %></a>
+            </td>
+            <td class="text-left">
+              <a href="/users/<%= user.id %>"><%= user.username %></a>
+            </td>
+            <td class="text-left">
+              <a href="/users/<%= user.id %>"><%= user.full_name %></a>
+            </td>
+            <td class="text-left">
+              <a href="/users/<%= user.id %>"><%= user.status %></a>
+            </td>
+            <td class="text-left">
+              <a href="/users/<%= user.id %>"><%= user.role %></a>
+            </td>
+            <td class="text-left">
+              <ul
+                class="detail-list"
+                title="<%= 'Created: ' + user.created_at__formatted + ' \nModified: ' + user.updated_at__formatted + ' \nTerminated: ' + user.deleted_at__formatted %>"
+              >
+                <li>
+                  <span>Created:</span>
+                  <span><%= user.created_at__formatted %></span>
+                </li>
+                <li>
+                  <span>Modified:</span>
+                  <span><%= user.updated_at__formatted %></span>
+                </li>
+                <li>
+                  <span>Deleted:</span>
+                  <span><%= user.deleted_at__formatted %></span>
+                </li>
+              </ul>
+            </td>
+            <% if (currentUser.role === "ADMIN") { %>
+            <td class="col-actions">
+              <div class="actions-group">
+                <% if (user.status === "pending activation") { %>
+                <form
+                  action="/users/<%= user.id %>/activate"
+                  method="post"
+                  class="inline-form"
+                >
+                  <button type="submit" class="btn btn-sm btn-action-go">
+                    Activate
+                  </button>
+                </form>
+                <% } %>
+
+                <% if (user.deleted_at === null) { %>
+                <form
+                  action="/users/<%= user.id %>/terminate"
+                  method="post"
+                  class="inline-form"
+                >
+                  <button type="submit" class="btn btn-sm btn-action-danger">
+                    Terminate
+                  </button>
+                </form>
+                <% } %>
+
+                <% if (user.deleted_at !== null) { %>
+                <form
+                  action="/users/<%= user.id %>/restore"
+                  method="post"
+                  class="inline-form"
+                >
+                  <button type="submit" class="btn btn-sm">Restore</button>
+                </form>
+                <% } %>
+              </div>
+            </td>
+            <% } %>
+          </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+
+    <% } else { %>
+
+    <p>No users found.</p>
+
+    <% } %>
+  </div>
+</div>

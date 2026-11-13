@@ -1,10 +1,20 @@
-.header__app-header {
+.header__header-wrapper {
+  grid-area: header;
   display: flex;
-  align-items: center;
-  justify-content: space-between;
   height: var(--header-height);
   overflow: hidden;
 
   background-color: var(--header-bg);
   padding: 0 var(--standard-gap);
+  width: 100%;
+}
+
+.header__app-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: var(--header-height);
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
 }

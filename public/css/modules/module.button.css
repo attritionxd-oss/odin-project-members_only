@@ -6,7 +6,7 @@
   font-weight: 500;
   border-radius: 0.6rem;
   border: 1px solid transparent;
-  outline: 1px solid transparent;
+  outline: 2px solid transparent;
   cursor: pointer;
   text-decoration: none;
   word-break: keep-all;
@@ -21,7 +21,6 @@
 .btn:hover,
 .btn:focus-visible {
   background-color: var(--color-mono-400);
-  outline-color: var(--color-blue-200);
   outline-offset: 2px;
 }
 
@@ -72,11 +71,9 @@
   color: var(--color-success-text);
 }
 
-.btn-action-go:hover {
-  background-color: var(--color-success-hover);
-}
-
+.btn-action-go:hover,
 .btn-action-go:focus-visible {
+  background-color: var(--color-success-hover);
   outline-color: var(--color-success-border);
   outline-offset: 2px;
 }

@@ -1,0 +1,33 @@
+<div class="reg-success__wrapper">
+  <% if (showSuccessHeader) { %>
+  <div class="reg-success__header">
+    <%- include("../icons/register-success-icon") %>
+    <h2>Success</h2>
+  </div>
+  <% } %>
+  <div class="reg-success__body">
+    <h2><%= "Hi, " + user.first_name + " " + user.last_name %></h2>
+    <p>
+      You may enter the secret code below to activate your account or you can
+      wait for an administrator to activate it for you.
+    </p>
+    <form action="/users/activate" method="post" class="reg-success__form">
+      <div class="form-group">
+        <label for="secretcode">Secret code</label>
+        <input type="text" name="secretcode" id="secretcode" />
+      </div>
+      <button type="submit" class="btn btn-rect btn-tall btn-action-go">
+        Join the club!
+      </button>
+    </form>
+    <% if (error) { %>
+    <div class="message-form__form-error" role="alert">
+      <ul class="form-errors">
+        <% error.forEach(e => { %>
+        <li class="form-error-item"><%= e.msg %></li>
+        <% }) %>
+      </ul>
+    </div>
+    <% } %>
+  </div>
+</div>

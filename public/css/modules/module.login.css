@@ -11,7 +11,8 @@
   font-size: 1.8rem;
 }
 
-.login__error {
+.login__error,
+.login-error {
   color: var(--color-stop-main);
   text-align: center;
 }

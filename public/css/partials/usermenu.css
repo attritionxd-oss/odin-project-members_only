@@ -28,6 +28,7 @@
 .usermenu__badge-overlay.is-open {
   visibility: visible;
   opacity: 1;
+  z-index: 1;
 }
 
 .usermenu__user-info {

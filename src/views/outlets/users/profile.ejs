@@ -1,0 +1,59 @@
+<div class="outlet__outlet-wrapper">
+  <div class="outlet__form-wrapper">
+    <h2><%= title %></h2>
+
+    <% if (notification) { %>
+    <div class="notification" role="alert">
+      <ul class="notification-list">
+        <% notification.forEach(n => { %>
+        <li class="notification-item success"><%= n.msg %></li>
+        <% }) %>
+      </ul>
+    </div>
+    <% } %>
+
+    <form action="/users/profile" method="post" class="outlet__form">
+      <p>
+        <label>Username</label>
+        <input
+          type="text"
+          name="username"
+          id="username"
+          value="<%= fields.username %>"
+          disabled="true"
+        />
+      </p>
+      <p>
+        <label>First name</label>
+        <input
+          type="text"
+          name="first_name"
+          id="first_name"
+          value="<%= fields.first_name %>"
+        />
+      </p>
+      <p>
+        <label>Last name</label>
+        <input
+          type="text"
+          name="last_name"
+          id="last_name"
+          value="<%= fields.last_name %>"
+        />
+      </p>
+      <button type="submit" class="btn btn-rect btn-tall btn-action-go">
+        Update Profile
+      </button>
+
+      <% if (error) { %>
+      <div class="login__error" role="alert">
+        <ul class="form-errors">
+          <% error.forEach(e => { %>
+          <li class="form-error-item"><%= e.msg %></li>
+          <% }) %>
+        </ul>
+      </div>
+      <% } %>
+    </form>
+  </div>
+</div>

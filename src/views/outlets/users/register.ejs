@@ -36,15 +36,31 @@
           type="password"
           name="password"
           id="password"
-          value="<%= fields.password %>"
+          placeholder="••••••••"
+        />
+      </p>
+      <p>
+        <label>Confirm password</label>
+        <input
+          type="password"
+          name="confirm_password"
+          id="confirm_password"
+          placeholder="••••••••"
         />
       </p>
       <button type="submit" class="btn btn-rect btn-tall btn-action-go">
         Sign Up
       </button>
+
+      <% if (error) { %>
+      <div class="login__error" role="alert">
+        <ul class="form-errors">
+          <% error.forEach(e => { %>
+          <li class="form-error-item"><%= e.msg %></li>
+          <% }) %>
+        </ul>
+      </div>
+      <% } %>
     </form>
-    <!-- prettier-ignore -->
-    <pre style="font-size: 0.8rem; margin-top: 1rem;"
-    >fields: <%= JSON.stringify(fields, null, 2) %></pre>
   </div>
 </div>
