@@ -1,4 +1,4 @@
-<% if (locals.isAuthenticated) { %>
+<% if (isAuthenticated) { %>
 <div class="usermenu" aria-label="Open profile overlay">
   <div class="usermenu__badge">
     <button type="button" class="usermenu__badge-button" title="Profile">
@@ -11,20 +11,37 @@
       <p>Role: <%= currentUser.role %></p>
       <p class="usermenu__joined_at">Joined: <%= currentUser.created_at %></p>
     </div>
+    <% if (isActivated) { %>
     <div>
       <!-- prettier-ignore -->
       <a
         class="btn btn-sm"
-        href="/users/<%= currentUser.id %>/messages"
+        href="/messages/user"
         aria-label="Manage own messages"
         >Manage messages</a>
       <!-- prettier-ignore -->
       <a
         class="btn btn-sm" 
-        href="/users/<%= currentUser.id %>/update" 
+        href="/users/profile" 
         aria-label="Edit user profile"
       >Edit profile</a>
+      <!-- prettier-ignore -->
+      <a
+        class="btn btn-sm" 
+        href="/users/password" 
+        aria-label="Change your password"
+      >Change password</a>
     </div>
+    <% } else { %>
+    <div>
+      <a
+        href="/users/activate"
+        aria-label="Activate your account"
+        class="btn btn-sm btn-action-go"
+        >Activate account</a
+      >
+    </div>
+    <% } %>
     <form action="/logout" method="post" style="display: inline">
       <button
         type="submit"

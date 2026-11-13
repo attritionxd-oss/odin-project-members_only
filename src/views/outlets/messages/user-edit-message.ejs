@@ -1,0 +1,62 @@
+<div class="outlet__outlet-wrapper">
+  <div class="message-form__wrapper">
+    <form
+      action="/messages/<%= message.id %>/edit"
+      method="post"
+      class="message-form message-form-tall"
+    >
+      <!-- prettier-ignore -->
+      <textarea
+        name="message"
+        id="message"
+        placeholder="Message"
+        autofocus="true"
+        autocorrect="on"
+        spellcheck="true"
+        wrap="soft"
+        aria-label="New message input"
+      ><%= message.message_body %></textarea>
+      <div class="message-form__btn-container">
+        <a
+          href="<%= targetRedirect %>"
+          class="btn btn-sm btn-rect"
+          aria-label="Back to messages"
+          >Back</a
+        >
+        <!-- prettier-ignore -->
+        <button
+          type="submit"
+          class="btn btn-sm btn-rect btn-action-go"
+          aria-label="Submit message"
+        ><%- include("../../icons/send-icon") %>
+        </button>
+      </div>
+    </form>
+    <div class="message-form__message_details">
+      <p>
+        <span>Author</span>
+        <span><%= message.full_name %></span>
+      </p>
+      <p>
+        <span>Created</span> <span><%= message.created_at__formatted %></span>
+      </p>
+      <p>
+        <span>Modified</span> <span><%= message.updated_at__formatted %></span>
+      </p>
+      <% if (message.deleted_at) { %>
+      <p>
+        <span>Deleted</span> <span><%= message.deleted_at__formatted %></span>
+      </p>
+      <% } %>
+    </div>
+    <% if (error) { %>
+    <div class="message-form__form-error" role="alert">
+      <ul class="form-errors">
+        <% error.forEach(e => { %>
+        <li class="form-error-item"><%= e.msg %></li>
+        <% }) %>
+      </ul>
+    </div>
+    <% } %>
+  </div>
+</div>

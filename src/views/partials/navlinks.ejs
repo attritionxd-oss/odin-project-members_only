@@ -11,7 +11,7 @@
       </a>
     </li>
 
-    <% if (locals.isAuthenticated) { %>
+    <% if (isAuthenticated && isActivated) { %>
     <li>
       <a
         class="navlinks__item"
@@ -22,6 +22,27 @@
         <%- include("../icons/chat-add-icon.ejs") %>
       </a>
     </li>
+    <li>
+      <a
+        class="navlinks__item"
+        href="/messages/user"
+        title="View sent messages"
+        aria-label="View sent messages"
+        ><%- include("../icons/chat-history-icon") %></a
+      >
+    </li>
+    <% if (["ADMIN", "MODERATOR"].includes(locals.currentUser.role)) { %>
+    <li>
+      <a
+        class="navlinks__item"
+        href="/users/manage"
+        title="Manage users"
+        aria-label="Manage site users"
+      >
+        <%- include("../icons/manage-users-icon.ejs") %>
+      </a>
+    </li>
+    <% } %>
     <% } %>
 
     <li>

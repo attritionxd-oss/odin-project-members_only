@@ -1,0 +1,67 @@
+<div class="outlet__outlet-wrapper">
+  <div>
+    <h2><%= title %></h2>
+
+    <div class="table-responsive">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th class="col-id">Message ID</th>
+            <th class="text-left">Message</th>
+            <th class="text-left">Sent</th>
+            <th class="text-left">Updated</th>
+            <th class="text-left">Hidden</th>
+            <th class="col-actions">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% if (messages && messages.length > 0) { %> <%
+          messages.forEach(message => { %>
+          <tr>
+            <td class="col-id"><%= message.id %></td>
+            <td class="text-left"><%= message.message_body %></td>
+            <td class="text-left"><%= message.created_at__formatted %></td>
+            <td class="text-left"><%= message.updated_at__formatted %></td>
+            <td class="text-left"><%= message.deleted_at__formatted %></td>
+            <td class="col-actions">
+              <div class="actions-group">
+                <a
+                  href="/messages/<%= message.id %>/edit?redirect=/messages/user"
+                  class="btn btn-sm"
+                  >Edit</a
+                >
+                <% if (!message.deleted_at) { %>
+                <form
+                  action="/messages/<%= message.id %>/delete?redirect=/messages/user"
+                  method="post"
+                  class="inline-form"
+                >
+                  <button type="submit" class="btn btn-sm btn-action-danger">
+                    Delete
+                  </button>
+                </form>
+                <% } else { %>
+                <form
+                  action="/messages/<%= message.id %>/restore"
+                  method="post"
+                  class="inline-form"
+                >
+                  <button type="submit" class="btn btn-sm">Restore</button>
+                </form>
+                <% } %>
+              </div>
+            </td>
+          </tr>
+          <% }) %>
+          <% } else { %>
+          <tr>
+            <td colspan="6" class="text-center empty-state">
+              No message history found.
+            </td>
+          </tr>
+          <% } %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

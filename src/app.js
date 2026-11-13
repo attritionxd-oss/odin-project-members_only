@@ -15,10 +15,15 @@ import {
 import { sessionFlash } from "#modules/sessionFlash/sessionFlash.middleware.js";
 import { sessionMiddleware } from "#config/session.js";
 import { passportSession } from "#config/passport.js";
-import { attachCurrentUser } from "#modules/auth/auth.middleware.js";
+import {
+  attachCurrentUser,
+  requireActive,
+  requireAuth,
+} from "#modules/auth/auth.middleware.js";
 
 // router imports
 import indexRoutes from "#modules/index/index.routes.js";
+import messageRoutes from "#modules/messages/message.routes.js";
 import authRoutes from "#modules/auth/auth.routes.js";
 import userRoutes from "#modules/users/user.routes.js";
 
@@ -48,6 +53,7 @@ app.use(attachCurrentUser);
 // routers
 app.use("/", authRoutes);
 app.use("/users", userRoutes);
+app.use("/messages", requireAuth, requireActive, messageRoutes);
 app.use("/", indexRoutes);
 
 // error handling
