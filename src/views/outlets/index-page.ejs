@@ -3,7 +3,7 @@
     <h2><%= title %></h2>
     <!-- prettier-ignore -->
     <section class="message-main">
-      <% if (messages) { %>
+      <% if (messages && messages.length > 0) { %>
       <ul class="message-main__list">
         <% messages.forEach(message => { %>
 
@@ -33,6 +33,8 @@
 
         <% }) %>
       </ul>
+      <% } else { %>
+       <p>No messages found.</p>
       <% } %>
     </section>
     <% if (isAuthenticated && isActivated) { %>

@@ -276,7 +276,29 @@ export const userController = {
 
   manageUsers: async (req, res, next) => {
     try {
-      const users = await userService.getAll({ includeDeleted: true });
+      const allowedSortFields = {
+        id: "id",
+        username: "username",
+        full_name: "full_name",
+        status: "status",
+        role: "role",
+        created: "created_at",
+        updated: "updated_at",
+        terminated: "deleted_at",
+      };
+
+      const sortQuery = req.query.sort;
+      const orderQuery = req.query.order?.toLowerCase();
+
+      const currentSort = allowedSortFields[sortQuery] ? sortQuery : "username";
+      const orderByField = allowedSortFields[currentSort];
+      const isOrderAscBool = orderQuery === "desc" ? false : true;
+
+      const users = await userService.getAll({
+        includeDeleted: true,
+        orderByField,
+        isOrderAscBool,
+      });
       if (!users) {
         const error = new Error("Internal Server Error");
         error.statusCode = 500;
@@ -287,6 +309,12 @@ export const userController = {
         `);
         return next(error);
       }
+
+      const getSortUrl = (columnKey) => {
+        const isCurrentColumn = currentSort === columnKey;
+        const nextOrder = isCurrentColumn && isOrderAscBool ? "desc" : "asc";
+        return `?sort=${columnKey}&order=${nextOrder}`;
+      };
 
       const usersWithFormatting = users.map((user) => {
         delete user.hash;
@@ -310,6 +338,9 @@ export const userController = {
       renderWithLayout(res, "outlets/admin/manage-users", {
         title: "User management",
         users: usersWithFormatting,
+        currentSort,
+        currentOrder: isOrderAscBool ? "asc" : "desc",
+        getSortUrl,
       });
     } catch (error) {
       next(error);
