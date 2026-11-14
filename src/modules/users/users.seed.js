@@ -9,6 +9,12 @@ export async function seedUsers() {
   try {
     await client.query("BEGIN");
 
+    await client.query(/* sql */ `
+      TRUNCATE TABLE users RESTART IDENTITY CASCADE;
+    `);
+    // eslint-disable-next-line no-console
+    console.log("Table preparation complete.");
+
     for (const user of usersToInsert) {
       const query = /* sql */ `
         INSERT INTO users (username, first_name, last_name, role, status, hash, salt, deleted_at)
