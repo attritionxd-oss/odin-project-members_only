@@ -33,6 +33,7 @@
     "db:schema:test": "node --env-file=.env.test.local src/models/schema.seed.js",
     "db:schema:dev": "node --env-file=.env.development.local src/models/schema.seed.js",
     "db:seed:dev:users": "node --env-file=.env.development.local src/modules/users/users.seed.js",
+    "db:seed:dev:messages": "node --env-file=.env.development.local src/modules/messages/messages.seed.js",
     "db:schema": "node src/models/schema.seed.js",
     "db:seed": "node src/models/db.seed.js"
   },
