@@ -16,6 +16,16 @@ projects:
                 sync: false
               - key: NODE_ENV
                 sync: false
+              - key: SESSION_SECRET
+                sync: false
+              - key: SEED_ADMIN_PASSWORD
+                sync: false
+              - key: SEED_MOD_PASSWORD
+                sync: false
+              - key: SEED_USER_PASSOWRD
+                sync: false
+              - key: ACTIVATION_SECRET_CODE
+                sync: false
             region: virginia
             buildCommand: npm install && npm run db:schema && npm run db:seed
             startCommand: npm start
