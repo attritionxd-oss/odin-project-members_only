@@ -1,3 +1,5 @@
+/* eslint-disable no-console */
+import { fileURLToPath } from "node:url";
 import { pool } from "#models/pool.js";
 import { getSeededUsers } from "#utils/scripts/getSeededUsers.js";
 
@@ -12,7 +14,7 @@ export async function seedUsers() {
     await client.query(/* sql */ `
       TRUNCATE TABLE users RESTART IDENTITY CASCADE;
     `);
-    // eslint-disable-next-line no-console
+
     console.log("Table preparation complete.");
 
     for (const user of usersToInsert) {
@@ -45,7 +47,7 @@ export async function seedUsers() {
     }
 
     await client.query("COMMIT");
-    // eslint-disable-next-line no-console
+
     console.log(`Successfully seeded ${usersToInsert.length} users.`);
   } catch (error) {
     await client.query("ROLLBACK");
@@ -56,6 +58,11 @@ export async function seedUsers() {
   }
 }
 
-if (process.argv[1] === new URL(import.meta.url).pathname) {
-  seedUsers().then(() => pool.end());
+const isDirectExecution = process.argv[1] === fileURLToPath(import.meta.url);
+if (isDirectExecution) {
+  console.log("users.seed.js direct execution");
+  seedUsers()
+    .then(() => pool.end())
+    // eslint-disable-next-line no-process-exit
+    .catch(() => process.exit(1));
 }

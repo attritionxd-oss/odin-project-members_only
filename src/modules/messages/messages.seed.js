@@ -61,7 +61,7 @@ const TABLES = {
   `,
 };
 
-export async function seedSchema() {
+export async function seedMessages() {
   const client = await pool.connect();
 
   try {
@@ -85,7 +85,8 @@ export async function seedSchema() {
 
 const isDirectExecution = process.argv[1] === fileURLToPath(import.meta.url);
 if (isDirectExecution) {
-  seedSchema()
+  console.log("messages.seed.js direct execution");
+  seedMessages()
     .then(() => pool.end())
     // eslint-disable-next-line no-process-exit
     .catch(() => process.exit(1));

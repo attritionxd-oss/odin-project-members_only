@@ -32,10 +32,11 @@
     "test:db": "jest --runInBand --watch --testPathPatterns=\"src/modules/(users|messages|userHistory)\"",
     "db:schema:test": "node --env-file=.env.test.local src/models/schema.seed.js",
     "db:schema:dev": "node --env-file=.env.development.local src/models/schema.seed.js",
-    "db:seed:dev:users": "node --env-file=.env.development.local src/modules/users/users.seed.js",
-    "db:seed:dev:messages": "node --env-file=.env.development.local src/modules/messages/messages.seed.js",
     "db:schema": "node src/models/schema.seed.js",
-    "db:seed": "node src/models/db.seed.js"
+    "table:seed:dev": "node --env-file=.env.development.local src/models/all.seed.js",
+    "table:seed:dev:users": "node --env-file=.env.development.local src/modules/users/users.seed.js",
+    "table:seed:dev:messages": "node --env-file=.env.development.local src/modules/messages/messages.seed.js",
+    "table:seed": "node src/models/all.seed.js"
   },
   "dependencies": {
     "connect-pg-simple": "^10.0.0",
