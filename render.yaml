@@ -27,7 +27,7 @@ projects:
               - key: ACTIVATION_SECRET_CODE
                 sync: false
             region: virginia
-            buildCommand: npm install && npm run db:schema && npm run db:seed
+            buildCommand: npm install && npm run db:schema && npm run table:seed
             startCommand: npm start
             autoDeployTrigger: "off"
             buildFilter:
