@@ -1,7 +1,7 @@
 {
   "name": "odin-project-members_only",
   "version": "1.0.0",
-  "description": "A simple messsaging board for an exclusive club.",
+  "description": "A simple messsaging board for an exclusive club, created as an implementation demonstrating authentication.",
   "keywords": [
     "backend",
     "nodejs",

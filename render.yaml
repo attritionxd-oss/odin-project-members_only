@@ -1,0 +1,32 @@
+version: "1"
+projects:
+  - name: Odin projects
+    environments:
+      - name: Production
+        services:
+          - type: web
+            name: odin-project-members_only
+            runtime: node
+            repo: https://github.com/attritionxd-oss/odin-project-inventory_application
+            plan: free
+            envVars:
+              - key: DATABASE_URL_POOLED
+                sync: false
+              - key: DATABASE_URL
+                sync: false
+              - key: NODE_ENV
+                sync: false
+            region: virginia
+            buildCommand: npm install && npm run db:schema && npm run db:seed
+            startCommand: npm start
+            autoDeployTrigger: "off"
+            buildFilter:
+              paths:
+                - src/**
+                - public/**
+                - package.json
+                - package-lock.json
+              ignoredPaths:
+                - "*"
+                - .*
+                - sandbox/**
