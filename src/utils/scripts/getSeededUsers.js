@@ -1,4 +1,4 @@
-import { rawUsers } from "#sandbox/rawUsers.js";
+import { rawUsers } from "./rawUsers.js";
 import { hashPassword } from "#utils/passwordUtils.js";
 
 /**
